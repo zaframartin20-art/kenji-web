@@ -1,0 +1,113 @@
+/* ================================
+   KENJI ZAN — VISUAL SYSTEM
+   ================================ */
+
+:root {
+  --kz-black: #050505;
+  --kz-surface: #0a0a0a;
+  --kz-cyan: #22d3ee;
+  --kz-cyan-light: #67e8f9;
+  --kz-white: #ffffff;
+  --kz-muted: #9ca3af;
+}
+
+/* Smooth scrolling */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection */
+
+::selection {
+  background: var(--kz-cyan);
+  color: #000;
+}
+
+/* Body */
+
+body {
+  background: var(--kz-black);
+  color: var(--kz-white);
+}
+
+/* Global links */
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Cyan glow */
+
+.kz-glow {
+  box-shadow:
+    0 0 20px rgba(34, 211, 238, 0.15),
+    0 0 60px rgba(34, 211, 238, 0.08);
+}
+
+/* Cyan text glow */
+
+.kz-text-glow {
+  text-shadow:
+    0 0 10px rgba(34, 211, 238, 0.35),
+    0 0 30px rgba(34, 211, 238, 0.15);
+}
+
+/* Glass surface */
+
+.kz-glass {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+/* Section */
+
+.kz-section {
+  position: relative;
+  overflow: hidden;
+  background: var(--kz-black);
+}
+
+/* Container */
+
+.kz-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Cyan line */
+
+.kz-line {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 211, 238, 0.5),
+    transparent
+  );
+}
+
+/* Hide scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.4);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.7);
+}

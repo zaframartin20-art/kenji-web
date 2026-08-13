@@ -1,32 +1,52 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import SectionTitle from "@/components/ui/SectionTitle";
+import SetCard from "./SetCard";
 
 const sets = [
   {
-    title: "Big Room House Vol. 1",
-    duration: "30 min",
-    platform: "YouTube",
-    url: "#",
+    number: "SET 01",
+    title: "Big Room Journey",
+    genre: "BIG ROOM HOUSE",
+    duration: "30 MIN",
+    image: "/images/sets/set-01.jpg",
+    youtubeUrl: "",
+    soundcloudUrl: "",
+    localUrl: "",
   },
+
   {
-    title: "Big Room House Vol. 2",
-    duration: "30 min",
-    platform: "YouTube",
-    url: "#",
+    number: "SET 02",
+    title: "Progressive Energy",
+    genre: "BIG ROOM HOUSE",
+    duration: "30 MIN",
+    image: "/images/sets/set-02.jpg",
+    youtubeUrl: "",
+    soundcloudUrl: "",
+    localUrl: "",
   },
+
   {
-    title: "Big Room House Vol. 3",
-    duration: "30 min",
-    platform: "YouTube",
-    url: "#",
+    number: "SET 03",
+    title: "Festival Mode",
+    genre: "BIG ROOM HOUSE",
+    duration: "30 MIN",
+    image: "/images/sets/set-03.jpg",
+    youtubeUrl: "",
+    soundcloudUrl: "",
+    localUrl: "",
   },
+
   {
-    title: "Big Room House Vol. 4",
-    duration: "30 min",
-    platform: "YouTube",
-    url: "#",
+    number: "SET 04",
+    title: "Final Destination",
+    genre: "BIG ROOM HOUSE",
+    duration: "30 MIN",
+    image: "/images/sets/set-04.jpg",
+    youtubeUrl: "",
+    soundcloudUrl: "",
+    localUrl: "",
   },
 ];
 
@@ -34,75 +54,64 @@ export default function Sets() {
   return (
     <section
       id="sets"
-      className="bg-neutral-950 text-white py-28 px-6"
+      className="relative overflow-hidden bg-neutral-950 px-6 py-32 text-white"
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Background glow */}
 
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-5xl font-black text-center"
-        >
-          DJ SETS
-        </motion.h2>
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.08, 0.16, 0.08],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-1/2
+          h-[600px]
+          w-[600px]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-cyan-500
+          blur-[160px]
+        "
+      />
 
-        <p className="text-center text-gray-400 mt-4 mb-16">
-          Live performances & exclusive mixes
-        </p>
+      <div className="relative z-10 mx-auto max-w-7xl">
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <SectionTitle
+          title="DJ SETS"
+          subtitle="30-minute Big Room House sessions"
+        />
+
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
 
           {sets.map((set, index) => (
-
-            <motion.a
-              key={set.title}
-              href={set.url}
-              whileHover={{
-                scale: 1.02,
-                y: -6,
+            <motion.div
+              key={set.number}
+              initial={{
+                opacity: 0,
+                y: 50,
               }}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.12 }}
-              viewport={{ once: true }}
-              className="group rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                delay: index * 0.12,
+              }}
             >
-
-              <div className="flex justify-between items-center">
-
-                <div>
-
-                  <h3 className="text-2xl font-bold">
-                    {set.title}
-                  </h3>
-
-                  <p className="text-gray-400 mt-2">
-                    {set.duration}
-                  </p>
-
-                </div>
-
-                <div
-                  className="
-                  w-16
-                  h-16
-                  rounded-full
-                  bg-cyan-500
-                  flex
-                  items-center
-                  justify-center
-                  group-hover:rotate-12
-                  transition
-                  "
-                >
-                  <Play fill="black" size={28} color="black" />
-                </div>
-
-              </div>
-
-            </motion.a>
-
+              <SetCard {...set} />
+            </motion.div>
           ))}
 
         </div>

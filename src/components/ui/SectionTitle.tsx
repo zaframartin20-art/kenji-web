@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-interface Props {
+interface SectionTitleProps {
   title: string;
   subtitle?: string;
 }
@@ -10,26 +10,41 @@ interface Props {
 export default function SectionTitle({
   title,
   subtitle,
-}: Props) {
+}: SectionTitleProps) {
   return (
-    <div className="text-center mb-16">
+    <div className="mb-16 text-center">
+
+      <motion.div
+        initial={{ width: 0, opacity: 0 }}
+        whileInView={{ width: 80, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mx-auto mb-6 h-[2px] bg-cyan-400"
+      />
 
       <motion.h2
-        initial={{ opacity:0, y:40 }}
-        whileInView={{ opacity:1, y:0 }}
-        viewport={{ once:true }}
-        className="text-5xl md:text-6xl font-black text-white"
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="
+          text-4xl
+          font-black
+          tracking-[0.18em]
+          text-white
+          md:text-6xl
+        "
       >
         {title}
       </motion.h2>
 
       {subtitle && (
         <motion.p
-          initial={{ opacity:0 }}
-          whileInView={{ opacity:1 }}
-          transition={{ delay:.2 }}
-          viewport={{ once:true }}
-          className="text-gray-400 mt-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mt-5 text-gray-500"
         >
           {subtitle}
         </motion.p>
