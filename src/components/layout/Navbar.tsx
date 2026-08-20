@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 const links = [
   { name: "Inicio", href: "#home" },
@@ -42,12 +42,12 @@ export default function Navbar() {
         <a
           href="#booking"
           onClick={(e) => {
-          e.preventDefault();
+            e.preventDefault();
 
-          document.getElementById("booking")?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-          });
+            document.getElementById("booking")?.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
           }}
           className="
             rounded-full

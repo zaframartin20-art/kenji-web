@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   ArrowUpRight,
@@ -16,39 +16,19 @@ const navigation = [
 ];
 
 const socials = [
-  {
-    name: "Instagram",
-    href: "#",
-  },
-  {
-    name: "TikTok",
-    href: "#",
-  },
-  {
-    name: "YouTube",
-    href: "#",
-  },
-  {
-    name: "Spotify",
-    href: "#",
-  },
-  {
-    name: "SoundCloud",
-    href: "#",
-  },
+  { name: "Instagram", href: "#" },
+  { name: "TikTok", href: "#" },
+  { name: "YouTube", href: "#" },
+  { name: "Spotify", href: "#" },
+  { name: "SoundCloud", href: "#" },
 ];
 
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-black text-white">
-
       <div className="kz-container py-16">
 
-        {/* Main footer */}
-
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_1fr]">
-
-          {/* Artist */}
 
           <div>
             <p className="text-xs font-bold tracking-[0.35em] text-cyan-400">
@@ -88,8 +68,6 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Navigation */}
-
           <div>
             <p className="text-xs font-bold tracking-[0.3em] text-gray-500">
               NAVIGATION
@@ -115,15 +93,12 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Social */}
-
           <div>
             <p className="text-xs font-bold tracking-[0.3em] text-gray-500">
               CONNECT
             </p>
 
             <div className="mt-5 grid grid-cols-2 gap-3">
-
               {socials.map((social) => (
                 <a
                   key={social.name}
@@ -149,7 +124,6 @@ export default function Footer() {
                   {social.name}
                 </a>
               ))}
-
             </div>
 
             <a
@@ -184,10 +158,7 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom */}
-
         <div className="mt-16 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-gray-600 md:flex-row md:items-center md:justify-between">
-
           <p>
             © {new Date().getFullYear()} Kenji Zan. All rights reserved.
           </p>
@@ -195,7 +166,6 @@ export default function Footer() {
           <p>
             DJ · Producer · Mexico
           </p>
-
         </div>
 
       </div>
