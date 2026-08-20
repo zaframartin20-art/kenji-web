@@ -1,4 +1,18 @@
-export const sets = [
+export interface DJSet {
+  number: string;
+  title: string;
+  genre: string;
+  duration: string;
+  image: string;
+
+  youtubeUrl?: string;
+  soundcloudUrl?: string;
+  localUrl?: string;
+
+  tracklist: string[];
+}
+
+export const sets: DJSet[] = [
   {
     number: "SET 01",
     title: "Big Room Journey",

@@ -6,6 +6,7 @@ import Sets from "@/components/sets/Sets";
 import Gallery from "@/components/gallery/Gallery";
 import Booking from "@/components/booking/Booking";
 import Footer from "@/components/layout/Footer";
+import Experience from "@/components/experience/Experience";
 
 export default function Home() {
   return (
@@ -19,6 +20,8 @@ export default function Home() {
       <Sets />
 
       <About />
+
+      <Experience />
 
       <Gallery />
 

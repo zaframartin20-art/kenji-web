@@ -4,14 +4,14 @@ const links = [
   { name: "Inicio", href: "#home" },
   { name: "Música", href: "#music" },
   { name: "DJ Sets", href: "#sets" },
+  { name: "About", href: "#about" },
   { name: "Galería", href: "#gallery" },
-  { name: "Contacto", href: "#booking" },
+  { name: "Booking", href: "#booking" },
 ];
 
 export default function Navbar() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/30 backdrop-blur-xl">
-
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
 
         <a
@@ -22,7 +22,6 @@ export default function Navbar() {
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
-
           {links.map((link) => (
             <a
               key={link.name}
@@ -38,11 +37,18 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-
         </div>
 
         <a
           href="#booking"
+          onClick={(e) => {
+          e.preventDefault();
+
+          document.getElementById("booking")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          });
+          }}
           className="
             rounded-full
             bg-cyan-400
@@ -60,7 +66,6 @@ export default function Navbar() {
         </a>
 
       </nav>
-
     </header>
   );
 }

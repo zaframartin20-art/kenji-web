@@ -3,52 +3,7 @@
 import { motion } from "framer-motion";
 import SectionTitle from "@/components/ui/SectionTitle";
 import SetCard from "./SetCard";
-
-const sets = [
-  {
-    number: "SET 01",
-    title: "Big Room Journey",
-    genre: "BIG ROOM HOUSE",
-    duration: "30 MIN",
-    image: "/images/sets/set-01.jpg",
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
-  },
-
-  {
-    number: "SET 02",
-    title: "Progressive Energy",
-    genre: "BIG ROOM HOUSE",
-    duration: "30 MIN",
-    image: "/images/sets/set-02.jpg",
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
-  },
-
-  {
-    number: "SET 03",
-    title: "Festival Mode",
-    genre: "BIG ROOM HOUSE",
-    duration: "30 MIN",
-    image: "/images/sets/set-03.jpg",
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
-  },
-
-  {
-    number: "SET 04",
-    title: "Final Destination",
-    genre: "BIG ROOM HOUSE",
-    duration: "30 MIN",
-    image: "/images/sets/set-04.jpg",
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
-  },
-];
+import { sets } from "@/data/sets";
 
 export default function Sets() {
   return (
@@ -87,7 +42,7 @@ export default function Sets() {
 
         <SectionTitle
           title="DJ SETS"
-          subtitle="30-minute Big Room House sessions"
+          subtitle="Live sessions by Kenji Zan"
         />
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -108,6 +63,7 @@ export default function Sets() {
               }}
               transition={{
                 delay: index * 0.12,
+                duration: 0.6,
               }}
             >
               <SetCard {...set} />
