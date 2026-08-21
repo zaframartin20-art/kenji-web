@@ -63,7 +63,7 @@ export default function Booking() {
   return (
     <section
       id="booking"
-      className="bg-black px-6 py-32 text-white"
+      className="scroll-mt-24 bg-black px-6 py-32 text-white"
     >
       <div className="mx-auto max-w-5xl">
 

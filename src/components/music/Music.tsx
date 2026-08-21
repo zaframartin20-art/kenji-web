@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import {
-  Music2,
   ExternalLink,
   Disc3,
 } from "lucide-react";
