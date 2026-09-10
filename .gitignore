@@ -44,3 +44,11 @@ Thumbs.db
 
 # Generated/cache data
 .cache/
+# Local AI/editor tools
+.agents/
+.claude/
+.cursor/
+.devin/
+
+# TypeScript build cache
+tsconfig.tsbuildinfo

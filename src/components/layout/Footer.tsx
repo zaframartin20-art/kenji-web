@@ -16,11 +16,21 @@ const navigation = [
 ];
 
 const socials = [
-  { name: "Instagram", href: "#" },
-  { name: "TikTok", href: "#" },
-  { name: "YouTube", href: "#" },
+  { name: "Instagram", 
+    href: "https://www.instagram.com/kenjizan_/" 
+  },
+  { name: "TikTok", 
+    href: "https://www.tiktok.com/@kenjizan22" 
+  },
+  {
+    name: "YouTube",
+    href: "https://www.youtube.com/@Kenjizan_",
+  },
   { name: "Spotify", href: "#" },
-  { name: "SoundCloud", href: "#" },
+  {
+    name: "SoundCloud",
+    href: "https://soundcloud.com/kenjizan22",
+  },
 ];
 
 export default function Footer() {

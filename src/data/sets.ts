@@ -1,4 +1,4 @@
-export interface DJSet {
+﻿export interface DJSet {
   number: string;
   title: string;
   genre: string;
@@ -14,78 +14,66 @@ export interface DJSet {
 
 export const sets: DJSet[] = [
   {
-    number: "SET 01",
+    number: "01",
     title: "Big Room Journey",
     genre: "BIG ROOM HOUSE",
     duration: "30 MIN",
-    image: "/images/sets/set-01.jpg",
-
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
+    image: "/images/sets/big-room-journey.jpg",
+    localUrl: "/audio/big-room-journey.mp3",
 
     tracklist: [
-      "Track 01",
-      "Track 02",
-      "Track 03",
-      "Track 04",
+      "Track real 01",
+      "Track real 02",
+      "Track real 03",
+      "Track real 04",
     ],
   },
 
   {
-    number: "SET 02",
+    number: "02",
     title: "Festival Energy",
     genre: "BIG ROOM HOUSE",
     duration: "30 MIN",
-    image: "/images/sets/set-02.jpg",
-
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
+    image: "/images/sets/festival-energy.jpg",
+    localUrl: "/audio/festival-energy.mp3",
 
     tracklist: [
-      "Track 01",
-      "Track 02",
-      "Track 03",
-      "Track 04",
+      "Track real 01",
+      "Track real 02",
+      "Track real 03",
+      "Track real 04",
     ],
   },
 
   {
-    number: "SET 03",
+    number: "03",
     title: "Progressive Journey",
     genre: "PROGRESSIVE HOUSE",
     duration: "30 MIN",
-    image: "/images/sets/set-03.jpg",
-
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
+    image: "/images/sets/progressive-journey.jpg",
+    localUrl: "/audio/progressive-journey.mp3",
 
     tracklist: [
-      "Track 01",
-      "Track 02",
-      "Track 03",
-      "Track 04",
+      "Track real 01",
+      "Track real 02",
+      "Track real 03",
+      "Track real 04",
     ],
   },
 
   {
-    number: "SET 04",
+    number: "04",
     title: "Final Destination",
     genre: "BIG ROOM / PROGRESSIVE",
     duration: "30 MIN",
-    image: "/images/sets/set-04.jpg",
-
-    youtubeUrl: "",
-    soundcloudUrl: "",
-    localUrl: "",
+    image: "/images/sets/final-destination.jpg",
+    localUrl: "/audio/final-destination.mp3",
 
     tracklist: [
-      "Track 01",
-      "Track 02",
-      "Track 03",
-      "Track 04",
+      "Track real 01",
+      "Track real 02",
+      "Track real 03",
+      "Track real 04",
     ],
   },
 ];

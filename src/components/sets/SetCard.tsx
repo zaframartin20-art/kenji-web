@@ -13,6 +13,7 @@ interface SetCardProps {
   youtubeUrl?: string;
   soundcloudUrl?: string;
   localUrl?: string;
+  tracklist: string[];
 }
 
 export default function SetCard({
@@ -24,6 +25,7 @@ export default function SetCard({
   youtubeUrl,
   soundcloudUrl,
   localUrl,
+  tracklist,
 }: SetCardProps) {
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
 
@@ -181,12 +183,13 @@ export default function SetCard({
 
       {isPlayerOpen && (
         <SetPlayer
-          title={title}
-          youtubeUrl={youtubeUrl}
-          soundcloudUrl={soundcloudUrl}
-          localUrl={localUrl}
-          onClose={() => setIsPlayerOpen(false)}
-        />
+        title={title}
+        youtubeUrl={youtubeUrl}
+        soundcloudUrl={soundcloudUrl}
+        localUrl={localUrl}
+        tracklist={tracklist}
+        onClose={() => setIsPlayerOpen(false)}
+      />
       )}
     </>
   );

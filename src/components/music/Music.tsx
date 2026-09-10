@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 import { artist } from "@/data/artist";
+import MusicPlayer from "./MusicPlayer";
 
 export default function Music() {
   return (
@@ -231,6 +232,12 @@ export default function Music() {
             </div>
           </div>
         </motion.div>
+
+        {/* ================================
+            MUSIC PLAYER
+            ================================ */}
+
+        <MusicPlayer />
 
         {/* ================================
             PLAYLISTS
