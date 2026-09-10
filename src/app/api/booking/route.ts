@@ -11,11 +11,32 @@ interface BookingRequest {
   message: string;
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+/*
+ * Environment variables
+ *
+ * Current production setup:
+ * BOOKING_FROM_EMAIL=Kenji Zan <onboarding@resend.dev>
+ *
+ * Future setup after verifying kenjizan.com in Resend:
+ * BOOKING_FROM_EMAIL=Kenji Zan <booking@kenjizan.com>
+ */
 
-const BOOKING_EMAIL = "zaframartin20@gmail.com";
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+
+if (!RESEND_API_KEY) {
+  console.error("RESEND_API_KEY is not configured.");
+}
+
+const resend = new Resend(RESEND_API_KEY);
+
+const BOOKING_EMAIL =
+  process.env.BOOKING_EMAIL || "zaframartin20@gmail.com";
+
+const BOOKING_FROM_EMAIL =
+  process.env.BOOKING_FROM_EMAIL ||
+  "Kenji Zan <onboarding@resend.dev>";
+
 const WHATSAPP_NUMBER = "525562502591";
-const FROM_EMAIL = "Kenji Zan <booking@kenjizan.com>";
 
 function escapeHtml(value: string): string {
   return value
@@ -46,6 +67,26 @@ function isValidDate(date: string): boolean {
 
 export async function POST(request: Request) {
   try {
+    /*
+     * Check Resend configuration
+     */
+
+    if (!RESEND_API_KEY) {
+      console.error("BOOKING ERROR: RESEND_API_KEY is missing.");
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Booking service is temporarily unavailable.",
+        },
+        { status: 500 }
+      );
+    }
+
+    /*
+     * Parse request
+     */
+
     const body = (await request.json()) as Partial<BookingRequest>;
 
     const name = String(body.name || "").trim();
@@ -119,11 +160,41 @@ export async function POST(request: Request) {
       );
     }
 
+    if (email.length > 254) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Email is too long.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (eventType.length > 100) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Event type is too long.",
+        },
+        { status: 400 }
+      );
+    }
+
     if (location.length > 150) {
       return NextResponse.json(
         {
           success: false,
           message: "Location is too long.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (budget.length > 100) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Budget information is too long.",
         },
         { status: 400 }
       );
@@ -152,12 +223,14 @@ export async function POST(request: Request) {
     const safeMessage = escapeHtml(message);
 
     /*
-     * Email sent to Kenji Zan
+     * ============================================================
+     * 1. Email sent to Kenji Zan
+     * ============================================================
      */
 
     const { data: bookingEmail, error: bookingError } =
       await resend.emails.send({
-        from: FROM_EMAIL,
+        from: BOOKING_FROM_EMAIL,
         to: [BOOKING_EMAIL],
         replyTo: email,
         subject: `New Booking Request - ${eventType}`,
@@ -248,6 +321,10 @@ export async function POST(request: Request) {
         `,
       });
 
+    /*
+     * Booking email failed
+     */
+
     if (bookingError) {
       console.error("RESEND BOOKING ERROR:", bookingError);
 
@@ -263,12 +340,14 @@ export async function POST(request: Request) {
     console.log("BOOKING EMAIL SENT:", bookingEmail?.id);
 
     /*
-     * Confirmation email sent to the client
+     * ============================================================
+     * 2. Confirmation email sent to the client
+     * ============================================================
      */
 
     const { data: confirmationEmail, error: confirmationError } =
       await resend.emails.send({
-        from: FROM_EMAIL,
+        from: BOOKING_FROM_EMAIL,
         to: [email],
         subject: "Booking Request Received - Kenji Zan",
         html: `
@@ -357,20 +436,21 @@ export async function POST(request: Request) {
             ">
               Kenji Zan<br />
               DJ / Producer<br />
-              kenjizan.com
+              kenji-web.vercel.app
             </p>
 
           </div>
         `,
       });
 
-    if (confirmationError) {
-      /*
-       * The booking was already received successfully.
-       * We don't fail the booking just because the
-       * confirmation email failed.
-       */
+    /*
+     * Confirmation email failed.
+     *
+     * The booking itself was already received successfully,
+     * so we do NOT return an error here.
+     */
 
+    if (confirmationError) {
       console.error(
         "RESEND CONFIRMATION ERROR:",
         confirmationError
@@ -381,6 +461,10 @@ export async function POST(request: Request) {
         confirmationEmail?.id
       );
     }
+
+    /*
+     * Success
+     */
 
     return NextResponse.json({
       success: true,
