@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.10.0",
   "engineVersion": "0edf323efd1d98336f3f0a68684b56f689b900d3",
   "activeProvider": "mysql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"mysql\"\n}\n\nmodel Booking {\n  id        Int      @id @default(autoincrement())\n  name      String   @db.VarChar(100)\n  email     String   @db.VarChar(254)\n  eventType String   @db.VarChar(100)\n  location  String   @db.VarChar(150)\n  date      DateTime\n  budget    String?  @db.VarChar(100)\n  message   String   @db.Text\n\n  status BookingStatus @default(PENDING)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([date])\n  @@index([status])\n  @@index([email])\n}\n\nenum BookingStatus {\n  PENDING\n  REVIEWED\n  CONFIRMED\n  REJECTED\n  COMPLETED\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -32,10 +32,10 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Booking\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"eventType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"location\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"date\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"budget\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"BookingStatus\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null,\"schema\":null}},\"enums\":{},\"types\":{}}")
 config.parameterizationSchema = {
-  strings: JSON.parse("[]"),
-  graph: "AAAA"
+  strings: JSON.parse("[\"where\",\"Booking.findUnique\",\"Booking.findUniqueOrThrow\",\"orderBy\",\"cursor\",\"Booking.findFirst\",\"Booking.findFirstOrThrow\",\"Booking.findMany\",\"data\",\"Booking.createOne\",\"Booking.createMany\",\"Booking.updateOne\",\"Booking.updateMany\",\"create\",\"update\",\"Booking.upsertOne\",\"Booking.deleteOne\",\"Booking.deleteMany\",\"having\",\"_count\",\"_avg\",\"_sum\",\"_min\",\"_max\",\"Booking.groupBy\",\"Booking.aggregate\",\"AND\",\"OR\",\"NOT\",\"id\",\"name\",\"email\",\"eventType\",\"location\",\"date\",\"budget\",\"message\",\"BookingStatus\",\"status\",\"createdAt\",\"updatedAt\",\"equals\",\"in\",\"notIn\",\"not\",\"lt\",\"lte\",\"gt\",\"gte\",\"contains\",\"startsWith\",\"endsWith\",\"search\",\"_relevance\",\"set\",\"increment\",\"decrement\",\"multiply\",\"divide\"]"),
+  graph: "OwkODhoAACoAMBsAAAQAEBwAACoAMB0CAAAAAR4BACwAIR8BACwAISABACwAISEBACwAISJAAC0AISMBAC4AISQBACwAISYAAC8mIidAAC0AIShAAC0AIQEAAAABACABAAAAAQAgDhoAACoAMBsAAAQAEBwAACoAMB0CACsAIR4BACwAIR8BACwAISABACwAISEBACwAISJAAC0AISMBAC4AISQBACwAISYAAC8mIidAAC0AIShAAC0AIQIjAAAwACA1AAA7ACADAAAABAAgAwAABQAwBAAAAQAgAwAAAAQAIAMAAAUAMAQAAAEAIAMAAAAEACADAAAFADAEAAABACALHQIAAAABHgEAAAABHwEAAAABIAEAAAABIQEAAAABIkAAAAABIwEAAAABJAEAAAABJgAAACYCJ0AAAAABKEAAAAABAQgAAAkAIAsdAgAAAAEeAQAAAAEfAQAAAAEgAQAAAAEhAQAAAAEiQAAAAAEjAQAAAAEkAQAAAAEmAAAAJgInQAAAAAEoQAAAAAEBCAAACwAwCx0CADoAIR4BADYAIR8BADYAISABADYAISEBADYAISJAADcAISMBADgAISQBADYAISYAADkmIidAADcAIShAADcAIQIAAAABACAIAAANACALHQIAOgAhHgEANgAhHwEANgAhIAEANgAhIQEANgAhIkAANwAhIwEAOAAhJAEANgAhJgAAOSYiJ0AANwAhKEAANwAhAgAAAAQAIAgAAA8AIAMAAAABACANAAAJACAOAAANACABAAAAAQAgAQAAAAQAIAYTAAAxACAUAAAyACAVAAA1ACAWAAA0ACAXAAAzACAjAAAwACAOGgAAGAAwGwAAFQAQHAAAGAAwHQIAGQAhHgEAGgAhHwEAGgAhIAEAGgAhIQEAGgAhIkAAGwAhIwEAHAAhJAEAGgAhJgAAHSYiJ0AAGwAhKEAAGwAhAwAAAAQAIAMAABQAMBIAABUAIAMAAAAEACADAAAFADAEAAABACAOGgAAGAAwGwAAFQAQHAAAGAAwHQIAGQAhHgEAGgAhHwEAGgAhIAEAGgAhIQEAGgAhIkAAGwAhIwEAHAAhJAEAGgAhJgAAHSYiJ0AAGwAhKEAAGwAhDRMAAB8AIBQAACkAIBUAAB8AIBYAAB8AIBcAAB8AICkCAAAAASoCAAAABCsCAAAABCwCACgAIS0C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"
 }
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
@@ -70,8 +70,8 @@ export interface PrismaClientConstructor {
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more Bookings
+   * const bookings = await prisma.booking.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -94,8 +94,8 @@ export interface PrismaClientConstructor {
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Bookings
+ * const bookings = await prisma.booking.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -188,7 +188,15 @@ export interface PrismaClient<
     extArgs: ExtArgs
   }>>
 
-    
+      /**
+   * `prisma.booking`: Exposes CRUD operations for the **Booking** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Bookings
+    * const bookings = await prisma.booking.findMany()
+    * ```
+    */
+  get booking(): Prisma.BookingDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

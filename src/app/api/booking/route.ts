@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { prisma } from "@/lib/prisma";
 
 interface BookingRequest {
   name: string;
@@ -68,7 +69,9 @@ function isValidDate(date: string): boolean {
 export async function POST(request: Request) {
   try {
     /*
+     * ============================================================
      * Check Resend configuration
+     * ============================================================
      */
 
     if (!RESEND_API_KEY) {
@@ -84,7 +87,9 @@ export async function POST(request: Request) {
     }
 
     /*
+     * ============================================================
      * Parse request
+     * ============================================================
      */
 
     const body = (await request.json()) as Partial<BookingRequest>;
@@ -98,7 +103,9 @@ export async function POST(request: Request) {
     const message = String(body.message || "").trim();
 
     /*
+     * ============================================================
      * Required fields
+     * ============================================================
      */
 
     if (
@@ -119,7 +126,9 @@ export async function POST(request: Request) {
     }
 
     /*
+     * ============================================================
      * Email validation
+     * ============================================================
      */
 
     if (!isValidEmail(email)) {
@@ -133,7 +142,9 @@ export async function POST(request: Request) {
     }
 
     /*
+     * ============================================================
      * Date validation
+     * ============================================================
      */
 
     if (!isValidDate(date)) {
@@ -147,7 +158,9 @@ export async function POST(request: Request) {
     }
 
     /*
+     * ============================================================
      * Length limits
+     * ============================================================
      */
 
     if (name.length > 100) {
@@ -211,7 +224,9 @@ export async function POST(request: Request) {
     }
 
     /*
-     * Escape user input before inserting it into HTML.
+     * ============================================================
+     * Escape user input before inserting it into HTML
+     * ============================================================
      */
 
     const safeName = escapeHtml(name);
@@ -224,7 +239,27 @@ export async function POST(request: Request) {
 
     /*
      * ============================================================
-     * 1. Email sent to Kenji Zan
+     * 1. Save booking in MySQL using Prisma
+     * ============================================================
+     */
+
+    const booking = await prisma.booking.create({
+      data: {
+        name,
+        email,
+        eventType,
+        location,
+        date: new Date(`${date}T00:00:00`),
+        budget: budget || null,
+        message,
+      },
+    });
+
+    console.log("BOOKING SAVED:", booking.id);
+
+    /*
+     * ============================================================
+     * 2. Email sent to Kenji Zan
      * ============================================================
      */
 
@@ -253,6 +288,16 @@ export async function POST(request: Request) {
             </p>
 
             <hr />
+
+            <h2>Booking Information</h2>
+
+            <p>
+              <strong>Booking ID:</strong> ${booking.id}
+            </p>
+
+            <p>
+              <strong>Status:</strong> Pending
+            </p>
 
             <h2>Event Information</h2>
 
@@ -297,8 +342,8 @@ export async function POST(request: Request) {
 
             <p>
               <strong>Email:</strong>
-              <a href="mailto:${BOOKING_EMAIL}">
-                ${BOOKING_EMAIL}
+              <a href="mailto:${safeEmail}">
+                ${safeEmail}
               </a>
             </p>
 
@@ -322,16 +367,27 @@ export async function POST(request: Request) {
       });
 
     /*
+     * ============================================================
      * Booking email failed
+     * ============================================================
      */
 
     if (bookingError) {
       console.error("RESEND BOOKING ERROR:", bookingError);
 
+      /*
+       * The booking is already safely stored in MySQL.
+       *
+       * We return an error because the notification email
+       * could not be sent, but the booking itself is NOT lost.
+       */
+
       return NextResponse.json(
         {
           success: false,
-          message: "Unable to send booking request.",
+          message:
+            "Your booking was saved, but we could not send the notification email.",
+          bookingId: booking.id,
         },
         { status: 500 }
       );
@@ -341,7 +397,7 @@ export async function POST(request: Request) {
 
     /*
      * ============================================================
-     * 2. Confirmation email sent to the client
+     * 3. Confirmation email sent to the client
      * ============================================================
      */
 
@@ -381,6 +437,10 @@ export async function POST(request: Request) {
             <hr />
 
             <h2>Your Request</h2>
+
+            <p>
+              <strong>Booking ID:</strong> ${booking.id}
+            </p>
 
             <p>
               <strong>Event:</strong> ${safeEventType}
@@ -444,10 +504,12 @@ export async function POST(request: Request) {
       });
 
     /*
-     * Confirmation email failed.
+     * ============================================================
+     * Confirmation email failed
      *
-     * The booking itself was already received successfully,
+     * The booking and main notification were already successful,
      * so we do NOT return an error here.
+     * ============================================================
      */
 
     if (confirmationError) {
@@ -463,14 +525,16 @@ export async function POST(request: Request) {
     }
 
     /*
+     * ============================================================
      * Success
+     * ============================================================
      */
 
     return NextResponse.json({
       success: true,
       message: "Booking request received.",
+      bookingId: booking.id,
     });
-
   } catch (error) {
     console.error("BOOKING ERROR:", error);
 

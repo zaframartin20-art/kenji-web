@@ -6,3 +6,31 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  email     String   @db.VarChar(254)
+  eventType String   @db.VarChar(100)
+  location  String   @db.VarChar(150)
+  date      DateTime
+  budget    String?  @db.VarChar(100)
+  message   String   @db.Text
+
+  status    BookingStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date])
+  @@index([status])
+  @@index([email])
+}
+
+enum BookingStatus {
+  PENDING
+  REVIEWED
+  CONFIRMED
+  REJECTED
+  COMPLETED
+}

@@ -1,16 +1,9 @@
 ﻿"use client";
 
-import {
-  LayoutDashboard,
-  FileVideo,
-  CalendarDays,
-  Lightbulb,
-  BarChart3,
-} from "lucide-react";
-
 export type ManagerSection =
   | "dashboard"
   | "content"
+  | "bookings"
   | "calendar"
   | "strategy"
   | "analytics";
@@ -20,12 +13,41 @@ type Props = {
   onSectionChange: (section: ManagerSection) => void;
 };
 
-const items = [
-  { id: "dashboard" as const, label: "Dashboard", icon: LayoutDashboard },
-  { id: "content" as const, label: "Contenido", icon: FileVideo },
-  { id: "calendar" as const, label: "Calendario", icon: CalendarDays },
-  { id: "strategy" as const, label: "Estrategia", icon: Lightbulb },
-  { id: "analytics" as const, label: "Analytics", icon: BarChart3 },
+const sections: {
+  id: ManagerSection;
+  label: string;
+  description: string;
+}[] = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    description: "Centro de operaciones",
+  },
+  {
+    id: "content",
+    label: "Contenido",
+    description: "Biblioteca y publicaciones",
+  },
+  {
+    id: "bookings",
+    label: "Bookings",
+    description: "Solicitudes comerciales",
+  },
+  {
+    id: "calendar",
+    label: "Calendario",
+    description: "Planificación",
+  },
+  {
+    id: "strategy",
+    label: "Estrategia",
+    description: "Crecimiento y experimentos",
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    description: "Datos y rendimiento",
+  },
 ];
 
 export default function ManagerSidebar({
@@ -33,61 +55,91 @@ export default function ManagerSidebar({
   onSectionChange,
 }: Props) {
   return (
-    <aside className="flex min-h-screen w-64 flex-col border-r border-white/10 bg-[#080808] p-6">
-      <div className="mb-10">
+    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-white/10 bg-[#050505]">
+      {/* HEADER */}
+      <div className="border-b border-white/10 p-6">
         <p className="text-xs uppercase tracking-[0.3em] text-cyan-400">
           Kenji Zan
         </p>
 
-        <h1 className="mt-2 text-xl font-semibold text-white">
+        <h1 className="mt-2 text-xl font-bold text-white">
           Manager AI
         </h1>
 
-        <p className="mt-2 text-xs leading-5 text-gray-600">
-          Centro de operaciones del proyecto artístico.
+        <p className="mt-1 text-xs text-gray-600">
+          Artist Operations
         </p>
       </div>
 
-      <nav className="space-y-2">
-        {items.map((item) => {
-          const Icon = item.icon;
-          const active = activeSection === item.id;
+      {/* NAVIGATION */}
+      <nav className="flex-1 space-y-2 overflow-y-auto p-4">
+        {sections.map((section) => {
+          const active =
+            activeSection === section.id;
 
           return (
             <button
-              key={item.id}
+              key={section.id}
               type="button"
-              onClick={() => onSectionChange(item.id)}
-              className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left text-sm transition ${
+              onClick={() =>
+                onSectionChange(section.id)
+              }
+              className={`group w-full rounded-xl border p-4 text-left transition ${
                 active
-                  ? "bg-cyan-400/10 text-cyan-400"
-                  : "text-gray-400 hover:bg-white/5 hover:text-cyan-400"
+                  ? "border-cyan-400/20 bg-cyan-400/[0.08]"
+                  : "border-transparent hover:border-white/10 hover:bg-white/[0.03]"
               }`}
             >
-              <Icon size={18} />
-              {item.label}
+              <div className="flex items-center justify-between">
+                <span
+                  className={`text-sm font-medium ${
+                    active
+                      ? "text-cyan-300"
+                      : "text-gray-300"
+                  }`}
+                >
+                  {section.label}
+                </span>
+
+                {section.id === "bookings" && (
+                  <span
+                    className={`h-2 w-2 rounded-full ${
+                      active
+                        ? "bg-cyan-400"
+                        : "bg-cyan-400/40"
+                    }`}
+                  />
+                )}
+              </div>
+
+              <p
+                className={`mt-1 text-[11px] ${
+                  active
+                    ? "text-gray-400"
+                    : "text-gray-600"
+                }`}
+              >
+                {section.description}
+              </p>
             </button>
           );
         })}
       </nav>
 
-      <div className="mt-auto pt-10">
-        <div className="rounded-xl border border-cyan-400/10 bg-cyan-400/5 p-4">
-          <p className="text-xs uppercase tracking-widest text-cyan-400">
-            AI Status
+      {/* FOOTER */}
+      <div className="border-t border-white/10 p-4">
+        <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-600">
+            System
           </p>
 
-          <div className="mt-3 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
+          <div className="mt-2 flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-green-400" />
 
-            <span className="text-sm text-gray-300">
-              Sistema activo
+            <span className="text-xs text-gray-400">
+              Manager activo
             </span>
           </div>
-
-          <p className="mt-2 text-xs leading-5 text-gray-600">
-            Modo de análisis progresivo.
-          </p>
         </div>
       </div>
     </aside>

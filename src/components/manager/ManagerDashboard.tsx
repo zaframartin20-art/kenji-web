@@ -12,6 +12,7 @@ import StrategyPanel from "./StrategyPanel";
 import ManagerCalendar from "./ManagerCalendar";
 import ManagerAnalytics from "./ManagerAnalytics";
 import ManagerBrain from "./ManagerBrain";
+import ManagerBookings from "./ManagerBookings";
 
 type ContentItem = {
   id: string;
@@ -21,6 +22,25 @@ type ContentItem = {
   size: string;
   createdAt: string;
   file: Blob;
+};
+
+type Booking = {
+  id: number;
+  name: string;
+  email: string;
+  eventType: string;
+  location: string;
+  date: string;
+  budget: string | null;
+  message: string;
+  status:
+    | "PENDING"
+    | "REVIEWED"
+    | "CONFIRMED"
+    | "REJECTED"
+    | "COMPLETED";
+  createdAt: string;
+  updatedAt: string;
 };
 
 const DB_NAME = "kenji-manager";
@@ -44,8 +64,15 @@ async function getContent(): Promise<ContentItem[]> {
 
     request.onsuccess = () => {
       const db = request.result;
-      const transaction = db.transaction(STORE_NAME, "readonly");
-      const requestItems = transaction.objectStore(STORE_NAME).getAll();
+
+      const transaction = db.transaction(
+        STORE_NAME,
+        "readonly"
+      );
+
+      const requestItems = transaction
+        .objectStore(STORE_NAME)
+        .getAll();
 
       requestItems.onsuccess = () => {
         resolve(requestItems.result as ContentItem[]);
@@ -62,21 +89,64 @@ async function getContent(): Promise<ContentItem[]> {
   });
 }
 
+async function getBookings(): Promise<Booking[]> {
+  try {
+    const response = await fetch("/api/manager/bookings", {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const result = await response.json();
+
+    if (
+      !result.success ||
+      !Array.isArray(result.bookings)
+    ) {
+      return [];
+    }
+
+    return result.bookings as Booking[];
+  } catch (error) {
+    console.error(
+      "MANAGER BOOKINGS FETCH ERROR:",
+      error
+    );
+
+    return [];
+  }
+}
+
 export default function ManagerDashboard() {
   const [activeSection, setActiveSection] =
     useState<ManagerSection>("dashboard");
 
-  const [content, setContent] = useState<ContentItem[]>([]);
+  const [content, setContent] =
+    useState<ContentItem[]>([]);
+
+  const [bookings, setBookings] =
+    useState<Booking[]>([]);
 
   useEffect(() => {
     getContent().then(setContent);
+    getBookings().then(setBookings);
 
     const interval = window.setInterval(() => {
       getContent().then(setContent);
-    }, 1000);
+      getBookings().then(setBookings);
+    }, 10000);
 
-    return () => window.clearInterval(interval);
+    return () => {
+      window.clearInterval(interval);
+    };
   }, []);
+
+  const pendingBookings = bookings.filter(
+    (booking) =>
+      booking.status === "PENDING"
+  ).length;
 
   function renderSection() {
     switch (activeSection) {
@@ -84,8 +154,18 @@ export default function ManagerDashboard() {
         return (
           <div className="space-y-8">
             <ContentManager />
-            <ManagerBrain content={content} />
+
+            <ManagerBrain
+              content={content}
+            />
           </div>
+        );
+
+      case "bookings":
+        return (
+          <ManagerBookings
+            bookings={bookings}
+          />
         );
 
       case "calendar":
@@ -104,27 +184,41 @@ export default function ManagerDashboard() {
               </h2>
 
               <p className="mt-3 max-w-2xl text-gray-500">
-                El Manager organizará las próximas decisiones de crecimiento
-                utilizando datos y experimentos.
+                El Manager organizará las próximas
+                decisiones de crecimiento utilizando
+                datos y experimentos.
               </p>
             </div>
 
             <StrategyPanel />
 
             <div className="mt-8">
-              <ManagerBrain content={content} />
+              <ManagerBrain
+                content={content}
+              />
             </div>
           </div>
         );
 
       case "analytics":
-        return <ManagerAnalytics contentCount={content.length} />;
+        return (
+          <ManagerAnalytics
+            contentCount={content.length}
+          />
+        );
 
       default:
         return (
           <div className="space-y-8">
-            <ManagerOverview contentCount={content.length} />
-            <ManagerBrain content={content} />
+            <ManagerOverview
+              contentCount={content.length}
+              bookingCount={bookings.length}
+              pendingBookings={pendingBookings}
+            />
+
+            <ManagerBrain
+              content={content}
+            />
           </div>
         );
     }
